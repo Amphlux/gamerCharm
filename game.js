@@ -16,6 +16,22 @@ let player = {
   grounded: false
 };
 
+let jetpack = {
+  x: 200,
+  y: 300,
+  width: 20,
+  height: 20,
+  color: 'blue'
+};
+
+let anchor = {
+  x: 400,
+  y: 300,
+  width: 20,
+  height: 20,
+  color: 'gray'
+};
+
 let keys = {};
 
 window.addEventListener('keydown', function(e) {
@@ -46,12 +62,38 @@ function update() {
     player.dy = 0;
     player.grounded = true;
   }
+
+  // Check for collision with jetpack
+  if (checkCollision(player, jetpack)) {
+    player.grounded = true;
+  }
+
+  // Check for collision with anchor
+  if (checkCollision(player, anchor)) {
+    player.grounded = false;
+  }
+}
+
+function checkCollision(rect1, rect2) {
+  return (
+    rect1.x < rect2.x + rect2.width &&
+    rect1.x + rect1.width > rect2.x &&
+    rect1.y < rect2.y + rect2.height &&
+    rect1.y + rect1.height > rect2.y
+  );
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   ctx.fillStyle = player.color;
   ctx.fillRect(player.x, player.y, player.width, player.height);
+
+  ctx.fillStyle = jetpack.color;
+  ctx.fillRect(jetpack.x, jetpack.y, jetpack.width, jetpack.height);
+
+  ctx.fillStyle = anchor.color;
+  ctx.fillRect(anchor.x, anchor.y, anchor.width, anchor.height);
 }
 
 function gameLoop() {
